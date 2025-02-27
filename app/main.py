@@ -53,8 +53,8 @@ app.add_middleware(
 )
 
 # 创建 DeepClaude 实例, 提出为Global变量
-if not DEEPSEEK_API_KEY or not CLAUDE_API_KEY:
-    logger.critical("请设置环境变量 CLAUDE_API_KEY 和 DEEPSEEK_API_KEY")
+if not DEEPSEEK_API_KEY:
+    logger.critical("请设置环境变量 DEEPSEEK_API_KEY")
     sys.exit(1)
 
 deep_claude = DeepClaude(
@@ -67,9 +67,9 @@ deep_claude = DeepClaude(
 )
 
 # 创建 OpenAICompatibleComposite 实例
-# if not DEEPSEEK_API_KEY or not OPENAI_COMPOSITE_API_KEY:
-#     logger.critical("请设置环境变量 OPENAI_COMPOSITE_API_KEY 和 DEEPSEEK_API_KEY")
-#     sys.exit(1)
+if not DEEPSEEK_API_KEY or not OPENAI_COMPOSITE_API_KEY:
+    logger.critical("请设置环境变量 OPENAI_COMPOSITE_API_KEY 和 DEEPSEEK_API_KEY")
+    sys.exit(1)
 
 openai_composite = OpenAICompatibleComposite(
     DEEPSEEK_API_KEY,
@@ -77,6 +77,7 @@ openai_composite = OpenAICompatibleComposite(
     DEEPSEEK_API_URL,
     OPENAI_COMPOSITE_API_URL,
     IS_ORIGIN_REASONING,
+    proxy=os.getenv("HTTP_PROXY")  # 传入代理配置
 )
 
 # 验证日志级别
